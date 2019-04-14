@@ -1,0 +1,36 @@
+.reveal .controls[data-controls-back-arrows="faded"] .navigate-left.enabled, .reveal .controls[data-controls-back-arrows="faded"] .navigate-up.enabled {
+    opacity: 0.1;
+}
+
+.reveal .controls .enabled {
+    visibility: visible;
+    opacity: 0.2;
+    cursor: pointer;
+    -webkit-transform: none;
+    transform: none;
+}
+
+.reveal .progress {
+    opacity: 0.2;
+}
+
+.slide-menu-button > a {
+    opacity: 0.2;
+}
+
+.reveal section img {
+    margin-bottom: 0;
+    background-color: #134674;
+}
+.reveal figcaption {
+    font-size: xx-small;
+}
+
+.reveal h5 {
+    text-align: left;
+}
+
+.reveal ul {
+    display: block;
+    margin-bottom: 1em;
+}
