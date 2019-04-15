@@ -28,13 +28,14 @@
         <!-- ******************************************************************** -->
         <section>
             <h1>Introduction to Neo4j</h1>
+            <aside class="notes">
+                <ul>
+                    <li>willkommen, zahlreiches erscheinen</li>
+                    <li>wer hat bereits mit Neo4j gearbeitet? Job / Freizeit</li>
+                </ul>
+            </aside>
         </section>
         <!-- ******************************************************************** -->
-        <section>
-            <iframe width="1120" height="630" src="https://www.youtube.com/embed/LJKxgRDpsm0"
-                    frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen></iframe>
-        </section>
         <section>
             <div style="width: 100%;">
                 <div style="float:left; width: 25%">
@@ -50,6 +51,12 @@
             <aside class="notes">
                 Talk about myself.
             </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <iframe width="1120" height="630" src="https://www.youtube.com/embed/LJKxgRDpsm0"
+                    frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
         </section>
         <!-- ********************** -->
         <section>
@@ -78,6 +85,7 @@
                     <li>11.5 Mill Dokumente</li>
                     <li>214.000 Briefkastenfirmen</li>
                     <li>Paradise Papers: 13 Mill Dokumente</li>
+                    <li>allein in D-Land > 100 Millionen an Steuerngeldern rückgeführt</li>
                 </ul>
             </aside>
         </section>
@@ -89,7 +97,9 @@
             </figure>
             <aside class="notes">
                 <ul>
-                    <li></li>
+                    <li>nodes and edges</li>
+                    <li>attributes also on edges: difference to relational</li>
+                    <li>Label zum gruppieren von Nodes</li>
                 </ul>
             </aside>
         </section>
@@ -421,6 +431,8 @@ match p=shortestPath((atlas:Movie)<-[*1..4]->(good:Movie))
             <aside class="notes">
                 <ul>
                     <li>mention in-process</li>
+                    <li>cluster: core: write, follower only read</li>
+                    <li>driver does routing, important to tell if write or read</li>
                 </ul>
             </aside>
         </section>
@@ -478,13 +490,14 @@ match p=shortestPath((atlas:Movie)<-[*1..4]->(good:Movie))
             </div>
             <aside class="notes">
                 <ul>
+                    <li>jdbc level</li>
                     <li>for Java: OGM / Spring Data</li>
                 </ul>
             </aside>
         </section>
         <!-- ********************** -->
         <section>
-            <h2>Community Eddition</h2>
+            <h2>Community Edition</h2>
             <h3>Or</h3>
             <h2>Enterprise Edition</h2>
             <aside class="notes">
@@ -493,9 +506,24 @@ match p=shortestPath((atlas:Movie)<-[*1..4]->(good:Movie))
                 </ul>
             </aside>
         </section>
+        <section>
+            <h2>Graph Algorithm</h2>
+            <figure>
+                <img src="img/OReilly-Graph-Algorithms_v2_ol1.jpg" style="margin: 0">
+            </figure>
+            <a href="https://neo4j.com/graph-algorithms-book/">Get the free book</a>
+            <aside class="notes">
+                <ul>
+                    <li>Centrality</li>
+                    <li>Community detection</li>
+                    <li>Path finding</li>
+                    <li>Page Rank</li>
+                </ul>
+            </aside>
+        </section>
         <!-- ********************** -->
         <section>
-            <h3>(graphs)-[:ARE]->(everywhere) ?</h3>
+            <h3>use cases</h3>
         </section>
         <!-- ********************** -->
         <section>
@@ -593,6 +621,25 @@ match p=shortestPath((atlas:Movie)<-[*1..4]->(good:Movie))
         </section>
         <!-- ********************** -->
         <section>
+            <h2 style="top: -60px; position: absolute">Online transactional processing</h2>
+            <div class="fragment" style="top:90px; position: absolute" >
+            <figure class="fragment animated fade-out" data-animated-duration="500">
+                <img src="img/ingressdb_data_model.png">
+            </figure>
+            </div>
+            <div class="fragment" style="top: 90px;position: absolute; vertical-align: middle">
+            <figure>
+                <img src="img/ingressdb_heatmap.png">
+            </figure>
+            </div>
+            <div class="fragment" style="top: 90px;position: absolute; vertical-align: middle">
+                <figure>
+                    <img src="img/ingressdb_agent_screen_bottom.png">
+                </figure>
+            </div>
+        </section>
+        <!-- ********************** -->
+        <section>
             <h2>Sandbox</h2>
             <figure>
                 <img src="img/sandbox.png" style="margin-top: 0">
@@ -620,6 +667,63 @@ match p=shortestPath((atlas:Movie)<-[*1..4]->(good:Movie))
                     <li></li>
                 </ul>
             </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h3>(graphs)-[:ARE]->(everywhere)</h3>
+            <aside class="notes">
+                <ul>
+                    <li></li>
+                    <li>Freund: Frau sieht überall grafen</li>
+                </ul>
+            </aside>
+        </section>
+        <section>
+            <figure>
+                <img src="img/graf50.jpg">
+            </figure>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Spring-Data-Neo4j</h2>
+            <figure>
+                <img src="img/sdn-and-ogm-buildingblocks.png" style="margin-top: 0">
+                <figcaption><span>Source: </span><a href="https://twitter.com/rotnroll666">@rotnroll666</a></figcaption>
+
+            </figure>
+            <aside class="notes">
+                <ul>
+                    <li>OGM like JPA</li>
+                    <li>SDN on top</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>DEMO!</h2>
+            <aside class="notes">
+                <ul>
+                    <li>start with showing neo4j desktop</li>
+                    <li>http://install.graphapp.io</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Vielen Dank</h2>
+            <h2>Q and A</h2>
+            <aside class="notes">
+                <ul>
+                    <li>make aware of online courses and certification</li>
+                    <li>ask if people are ok to photo-shot</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section >
+            <h1>Welcome Neo4j</h1>
+            <h2>from Munich / Germany</h2>
+            <p>#GlobalGraphCelebrationDay</p>
         </section>
     </div>
 </div>
