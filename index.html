@@ -31,6 +31,11 @@
         </section>
         <!-- ******************************************************************** -->
         <section>
+            <iframe width="1120" height="630" src="https://www.youtube.com/embed/LJKxgRDpsm0"
+                    frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+        </section>
+        <section>
             <div style="width: 100%;">
                 <div style="float:left; width: 25%">
                     <img src="img/Bert.png">
@@ -143,15 +148,21 @@
                     <li>1970, Debate CODASYL <-> Relational Model</li>
                     <li>performance on existing hardware</li>
                     <li>Complex, no query language</li>
+                    <li>Triple Store, used for NLP -> Semantic Web</li>
                 </ul>
             </aside>
         </section>
         <!-- ********************** -->
         <section>
-            <h2>Movie Graph</h2>
-            <figure>
+            <h2>Cypher</h2>
+            <figure class="fragment animated scale-down move-to" data-fragment-index="1" data-animated-move-to-top="-50%" data-animated-move-to-left="0" data-animated-scale-down-to="0.6" data-animated-duration="500">
                 <img src="img/movies.svg">
             </figure>
+            <div style="position: absolute; top: 55%; width: 100%" >
+                <pre class="fragment" data-fragment-index="1">
+                    <code data-noescape><span class="fragment" data-fragment-index="2">match</span> (<span class="fragment" data-fragment-index="3">p</span>:Person)-[<span class="fragment" data-fragment-index="3">r</span>:DIRECTED]->(<span class="fragment" data-fragment-index="3">m</span>:Movie)<span class="fragment" data-fragment-index="4"> return p,r,n</span></code>
+                </pre>
+            </div>
             <aside class="notes">
                 <ul>
                     <li></li>
@@ -160,11 +171,456 @@
         </section>
         <!-- ********************** -->
         <section>
-            <section>
-                <h3>(graphs)-[:ARE]->(everywhere)</h3>
-            </section>
+            <h2>Pattern Matching</h2>
+            <figure class="fragment animated scale-down move-to" data-fragment-index="1" data-animated-move-to-top="-45%"
+                    data-animated-move-to-left="0" data-animated-scale-down-to="0.6" data-animated-duration="500">
+                <img src="img/movie_sample.svg" height="500px">
+            </figure>
+            <div style="position: absolute; top: 55%; width: 100%" >
+                <pre class="fragment">
+                    <code>
+match p=shortestPath((atlas:Movie)-[*1..4]-(good:Movie))
+    where good.title = 'A Few Good Men'
+      and atlas.title = 'Cloud Atlas'
+    return p
+                    </code>
+                </pre>
+            </div>
+            <aside class="notes">
+                <ul>
+                    <li></li>
+                </ul>
+            </aside>
         </section>
-        <section>Slide 2</section>
+        <!-- ********************** -->
+        <section>
+            <h2>shortest path - Result</h2>
+                <pre>
+                    <code>
+match p=shortestPath((atlas:Movie)<-[*1..4]->(good:Movie))
+    where good.title = 'A Few Good Men'
+      and atlas.title = 'Cloud Atlas'
+    return p
+                    </code>
+                </pre>
+            <img src="img/shortest_path.svg">
+            <aside class="notes">
+                <ul>
+                    <li></li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>all path - Result</h2>
+            <pre>
+                    <code>match p=(atlas:Movie)<-[*1..4]->(good:Movie)
+    where good.title = 'A Few Good Men'
+      and atlas.title = 'Cloud Atlas'
+    return p</code>
+                </pre>
+            <img src="img/all_path.svg">
+            <aside class="notes">
+                <ul>
+                    <li></li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Cypher</h2>
+            <dl>
+                <dt>match:</dt>
+                <dd>query for notes and relationships</dd>
+                <dt>create / merge:</dt>
+                <dd>create notes and / or relationships</dd>
+                <dt>delete:</dt>
+                <dd>delete of notes and relationships</dd>
+                <dt>set:</dt>
+                <dd>setting of attributes</dd>
+                <dt>remove:</dt>
+                <dd>removing of attributes</dd>
+                <dt>with:</dt>
+                <dd>chaining of queries</dd>
+            </dl>
+            <aside class="notes">
+                <ul>
+                    <li>declarative query language</li>
+                    <li>opencypher</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>and more</h2>
+            <div class="container">
+                <div class="sliding-background"></div>
+                <img src="img/refcard.png">
+            </div>
+
+            <aside class="notes">
+                <ul>
+                    <li>spatial</li>
+                    <li>string: </li>
+                    <li>converter: toInt, toFloat,..</li>
+                    <li>temporal: working with times</li>
+                    <li>aggregations</li>
+                    <li>schema: index & constraints</li>
+                    <li>math: round, abs,..</li>
+                    <li>lists, maps, foreach,..</li>
+                    <li>profiling: explain & profile</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+
+            <dl>
+                <dt>A</dt>
+                <dd class="fragment">tomicity</dd>
+                <dt>C</dt>
+                <dd class="fragment">onsistency</dd>
+                <dt>I</dt>
+                <dd class="fragment">solation</dd>
+                <dt>D</dt>
+                <dd class="fragment">urability</dd>
+            </dl>
+
+            <aside class="notes">
+                <ul>
+                    <li>A: atomic transactions; all or nothing</li>
+                    <li>C: data consistent with constrains</li>
+                    <li>I: transactions are isolated</li>
+                    <li>D: state once written is not lost</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>DB - Plugins</h2>
+            <ul>
+                <li>reside inside database</li>
+                <li>low-level API</li>
+                <li>Graph Algorithm</li>
+                <li>GraphQL</li>
+            </ul>
+            <aside class="notes">
+                <ul>
+                    <li>fast, no network</li>
+                    <li>GraphQL: GrandStack</li>
+                    <li>and, of course: --> APOC</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>APOC</h2>
+            <div style="width: 100%;">
+                <figure style="float:right; width: 30%">
+                    <img src="img/matrix_apoc.png">
+                    <figcaption><span>Apoc; Source: </span><a href="http://tvtropes.org/pmwiki/pmwiki.php/Characters/TheMatrix">vtropes.org</a></figcaption>
+                </figure>
+            </div>
+            <div style="float:none;">
+                <ul>
+                    <li>"A Package Of Components"</li>
+                    <li>"Awesome Procedures On Cypher"</li>
+                    <li><a href="https://neo4j-contrib.github.io/neo4j-apoc-procedures/">https://neo4j-contrib.github.io/neo4j-apoc-procedures/</a></li>
+                </ul>
+            </div>
+            <aside class="notes">
+                <ul>
+                    <li>Plugin for Neo4j DB</li>
+                    <li>fast access to database, no network, native API</li>
+                    <li>reference to 'The Matrix', Cypher betrays Apoc</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Apoc</h2>
+            <ul>
+                <li class="fragment">499 Functions and Procedures</li>
+                <li class="fragment">Import / Export</li>
+                <li class="fragment">Text, Phonetic</li>
+                <li class="fragment">Refactorings</li>
+                <li class="fragment">Jobs, Transactions, virtual Nodes ..</li>
+            </ul>
+
+            <pre class="fragment">
+                <code>CALL apoc.load.csv('/tmp/test.csv') yield lineNo, map,
+    list RETURN *;</code>
+            </pre>
+            <aside class="notes">
+                <ul>
+                    <li>Import: csv, json, jdbc, ldap,..</li>
+                    <li>import source can be networked</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Running Neo4j</h2>
+            <figure class="fragment animated scale-down move-to" data-animated-move-to-top="-160%"
+                    data-animated-move-to-left="200%" data-animated-scale-down-to="0.2" data-animated-duration="500">
+                <img src="img/jvm.jpeg">
+                <figcaption>JVM; Source: Oracle</figcaption>
+            </figure>
+            <div class="fragment" style="position: absolute; top: 20%;">
+                <figure class="fragment animated scale-down move-to" data-animated-move-to-top="-160%"
+                        data-animated-move-to-left="-200%" data-animated-scale-down-to="0.2" data-animated-duration="500">
+                    <img src="img/multi-clustering-neo4j.png">
+                    <figcaption>Cluster; Source: Neo4j</figcaption>
+                </figure>
+            </div>
+            <div class="fragment" style="position: absolute; top: 20%; left: 40%">
+                <figure class="fragment animated scale-down move-to" data-animated-move-to-top="80%"
+                        data-animated-move-to-left="-400%" data-animated-scale-down-to="0.4" data-animated-duration="500">
+                    <img src="img/neo4j-docker.jpg">
+                    <figcaption>Docker; Source: Neo4j</figcaption>
+                </figure>
+            </div>
+            <div class="fragment" style="position: absolute; top: 20%; left: 10%">
+                <figure class="fragment animated scale-down move-to" data-animated-move-to-top="100%"
+                        data-animated-move-to-left="20%" data-animated-scale-down-to="0.2" data-animated-duration="500">
+                    <img src="img/neo4j-k8s.jpg">
+                    <figcaption>Kubernetes; Source: Neo4j</figcaption>
+                </figure>
+            </div>
+            <div class="fragment" style="position: absolute; top: 20%; left: 25%">
+                <figure class="fragment animated scale-down move-to" data-animated-move-to-top="110%"
+                        data-animated-move-to-left="-120%" data-animated-scale-down-to="0.1" data-animated-duration="500">
+                    <img src="img/helm-988x1024.png">
+                    <figcaption>Helm; Source: Neo4j</figcaption>
+                </figure>
+            </div>
+            <div class="fragment" style="position: absolute; top: 20%; left: 25%">
+                <figure class="fragment animated scale-down move-to" data-animated-move-to-top="110%"
+                        data-animated-move-to-left="-120%" data-animated-scale-down-to="0.3" data-animated-duration="500">
+                    <img src="img/aws-cloud-neo4j.png">
+                </figure>
+            </div>
+            <div class="fragment" style="position: absolute; top: 20%; left: 25%">
+                <figure class="fragment animated scale-down move-to" data-animated-move-to-top="110%"
+                        data-animated-move-to-right="-120%" data-animated-scale-down-to="0.3" data-animated-duration="500">
+                    <img src="img/gcp-cloud-neo4j.png">
+                </figure>
+            </div>
+            <div class="fragment" style="position: absolute; top: 20%; left: 25%; width: 80%">
+                <figure class="fragment animated scale-down move-to" data-animated-move-to-top="100%"
+                        data-animated-move-to-right="40%" data-animated-scale-down-to="0.3" data-animated-duration="500">
+                    <img src="img/azure-cloud-neo4j1.png">
+                </figure>
+            </div>
+            <div class="fragment" style="position: absolute; top: 20%; left: 25%; width: 80%">
+                <figure class="fragment animated scale-down move-to" data-animated-move-to-top="180%"
+                        data-animated-move-to-right="0%" data-animated-scale-down-to="0.3" data-animated-duration="500">
+                    <img src="img/neo4j-desktop.png">
+                </figure>
+            </div>
+            <aside class="notes">
+                <ul>
+                    <li>mention in-process</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Protocol</h2>
+            <ul>
+                <li><figure style="display: inline-grid; vertical-align: middle">
+                    <img src="img/boltprotocol.png" style="background-color: transparent; border: none">
+                    <figcaption><span>Source: </span><a href="https://boltprotocol.org/">boltprotocol.org</a></figcaption>
+                </figure>
+                <span>: Bolt, lightweight binary protocol</span>
+                </li>
+                <li>
+                    <figure style="display: inline-grid; vertical-align: middle">
+                        <img src="img/http.png"  style="background-color: transparent; border: none">
+                        <figcaption><span>Source: </span><a href="https://de.wikipedia.org/wiki/Datei:HTTP_logo.svg">wikipedia</a></figcaption>
+                    </figure>
+                    <span>: transactional json endpoint</span>
+                </li>
+            </ul>
+            <aside class="notes">
+                <ul>
+                    <li>both support authentication / users / roles</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Drivers</h2>
+            <div class="main-container">
+                <div class="left-container">
+                    <span>Official</span>
+                    <ul>
+                        <li>Java</li>
+                        <li>.Net</li>
+                        <li>Python</li>
+                        <li>Go</li>
+                        <li>JavaScript</li>
+                    </ul>
+                </div>
+                <div class="right-container">
+                    <span>Community</span>
+                    <ul>
+                        <li>Erlang / Elixir</li>
+                        <li>C/C++</li>
+                        <li>Ruby</li>
+                        <li>Clojure</li>
+                        <li>PHP</li>
+                        <li>Perl</li>
+                        <li>R</li>
+                        <li>Haskell</li>
+                    </ul>
+                </div>
+            </div>
+            <aside class="notes">
+                <ul>
+                    <li>for Java: OGM / Spring Data</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Community Eddition</h2>
+            <h3>Or</h3>
+            <h2>Enterprise Edition</h2>
+            <aside class="notes">
+                <ul>
+                    <li>Startup program</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h3>(graphs)-[:ARE]->(everywhere) ?</h3>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Identity Management</h2>
+            <figure>
+                <img src="img/identity-data-model.png">
+                <figcaption><span>Source: </span><a href="https://neo4j.com/blog/telenor-neo4j-competitive-advantage-iam/">Neo4j.com</a></figcaption>
+            </figure>
+            <aside class="notes">
+                <ul>
+                    <li>Groups and Roles build Graphs</li>
+                    <li>Resources build Trees (Graphs)</li>
+                    <li>Problem that lead to neo4j existence</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Fraud Detection</h2>
+            <figure>
+                <img src="img/first-party-bank-fraud-detection-graph-database.png">
+                <figcaption><span>Source: </span><a href="https://neo4j.com/blog/first-party-bank-fraud-detection-graph-databases/">Neo4j.com</a></figcaption>
+            </figure>
+            <aside class="notes">
+                <ul>
+                    <li>2 Phones / 2 Addresses -> 4 Persona</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Fraud Detection</h2>
+            <figure>
+                <img src="img/fraud-detection-graph-algorithm.png">
+                <figcaption><span>Source: </span><a href="https://neo4j.com/blog/first-party-bank-fraud-detection-graph-databases/">Neo4j.com</a></figcaption>
+            </figure>
+            <aside class="notes">
+                <ul>
+                    <li>4 People -> 16 persona</li>
+                    <li>exponential explosion</li>
+                    <li>relational queries to slow</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>jQAssistant</h2>
+            <figure>
+                <img src="img/jqassistant_model.png">
+                <figcaption><span>Source: </span><a href="https://neo4j.com/blog">Neo4j.com</a></figcaption>
+            </figure>
+            <aside class="notes">
+                <ul>
+                    <li>how it works / in-process</li>
+                    <li>structural analysis</li>
+                    <li>exploration and validation</li>
+                    <li>expansible through plugins</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Service Monitoring</h2>
+            <figure>
+                <img src="img/macgyver-rest-api-neo4j.png" style="margin-top: 0">
+            </figure>
+            <figure>
+                <img src="img/virtual-service-data-model-neo4j.png">
+                <figcaption><span>Source: </span><a href="https://neo4j.com/blog/managing-microservices-neo4j/">Neo4j.com</a></figcaption>
+            </figure>
+            <aside class="notes">
+                <ul>
+                    <li>Lending Club: > 130 microservices</li>
+                    <li>real time operational data</li>
+                    <li>grouped into virtual services</li>
+                    <li>MacGyver hooked into aws, vmware, splunk, githup,..</li>
+                    <li>infrastructure monitoring > neo4j</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Social Graphs</h2>
+            <figure>
+                <img src="img/behance.png">
+                <figcaption>Adobe Behance</figcaption>
+
+            </figure>
+            <aside class="notes">
+                <ul>
+                    <li>Social web for Creative / Activity Feed</li>
+                    <li>Cassandra: 48 Server -> Neo4j:3</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Sandbox</h2>
+            <figure>
+                <img src="img/sandbox.png" style="margin-top: 0">
+                <figcaption>Neo4j Sandboxes</figcaption>
+
+            </figure>
+            <aside class="notes">
+                <ul>
+                    <li>data exploration</li>
+                    <li>own sandbox: 3 days</li>
+                </ul>
+            </aside>
+        </section>
+        <section>
+            <h2>Others</h2>
+            <ul>
+                <li class="fragment">recommendation</li>
+                <li class="fragment">natural language processing</li>
+                <li class="fragment">medical science</li>
+                <li class="fragment">machine learning</li>
+                <li class="fragment"><a href="https://neo4j.com/use-cases/">see Neo4j website</a></li>
+            </ul>
+            <aside class="notes">
+                <ul>
+                    <li></li>
+                </ul>
+            </aside>
+        </section>
     </div>
 </div>
 
