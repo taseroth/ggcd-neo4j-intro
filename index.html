@@ -1,0 +1,990 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>GGCD - Intro to Neo4j</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <!-- ******************************************************************** -->
+        <section>
+            <h1>Introduction to Neo4j</h1>
+            <aside class="notes">
+                <ul>
+                    <li>willkommen, zahlreiches erscheinen</li>
+                    <li>wer hat bereits mit Neo4j gearbeitet? Job / Freizeit</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ******************************************************************** -->
+        <section>
+            <div style="width: 100%;">
+                <div style="float:left; width: 25%">
+                    <img src="img/Bert.png">
+                </div>
+                <div style="float:none;">
+                    <div style="font-size: 2em">Bert Radke</div>
+                    <div style="font-size: 1.5em">bbv Software Services</div>
+                    <div style="font-size: 1em">Senior Consultant</div>
+                    <div style="font-size: 0.8em">Twitter: <a href="https://twitter.com/taseroth">@taseroth</a></div>
+                </div>
+            </div>
+            <aside class="notes">
+                Talk about myself.
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <iframe width="1120" height="630" src="https://www.youtube.com/embed/LJKxgRDpsm0"
+                    frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Growth of Data</h2>
+            <figure>
+                <img src="img/big-data-growth.jpg">
+                <figcaption><span>Quelle: </span><a href="https://www.promptcloud.com/blog/want-to-ensure-business-growth-via-big-data-augment-enterprise-data-with-web-data/">promptcloud.com</a></figcaption>
+            </figure>
+            <aside class="notes">
+                <ul>
+                    <li>Mehrwert entsteht durch vernetzte Daten</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Panama Papers</h2>
+            <figure>
+            <img src="img/panama_papers.jpg">
+                <figcaption><span>Quelle: </span><a href="https://panamapapers.sueddeutsche.de/">sueddeutsche.de</a></figcaption>
+            </figure>
+            <aside class="notes">
+                <ul>
+                    <li>Mossack Fonseca</li>
+                    <li>2.6 Terabyte</li>
+                    <li>11.5 Mill Dokumente</li>
+                    <li>214.000 Briefkastenfirmen</li>
+                    <li>Paradise Papers: 13 Mill Dokumente</li>
+                    <li>allein in D-Land > 100 Millionen an Steuerngeldern rückgeführt</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Property Graph</h2>
+            <figure>
+                <img src="img/property_graph.svg">
+            </figure>
+            <aside class="notes">
+                <ul>
+                    <li>nodes and edges</li>
+                    <li>attributes also on edges: difference to relational</li>
+                    <li>Label zum gruppieren von Nodes</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Properties</h2>
+            <figure>
+                <img src="img/properties.svg">
+            </figure>
+            <aside class="notes">
+                <ul>
+                    <li></li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Schema</h2>
+            <figure class="fragment animated scale-down move-to" data-animated-move-to-top="-25%" data-animated-move-to-left="80%" data-animated-scale-down-to="0.4" data-animated-duration="500">
+                <img src="img/database_schema.png">
+                <figcaption><span>Quelle: </span><a href="https://stackoverflow.com/questions/45135485/creating-a-database-schema-from-the-movie-database">stackoverflow.com</a></figcaption>
+            </figure>
+            <div style="position: absolute; top: 20%;">
+                <h5 class="fragment fade-in">Indexes</h5>
+                <ul>
+                    <li class="fragment fade-in">single-property</li>
+                    <li class="fragment fade-in">composite</li>
+                    <li class="fragment fade-in">full-text</li>
+                </ul>
+                <h5 class="fragment fade-in">Constrains</h5>
+                <ul>
+                    <li class="fragment fade-in">Unique property constraints</li>
+                    <li class="fragment fade-in">Property existence constraints</li>
+                    <li class="fragment fade-in">Node Keys</li>
+                </ul>
+            </div>
+            <aside class="notes">
+                <ul>
+                    <li>Nodes and Relations</li>
+                    <li>also creates index</li>
+                    <li>unique: property must not exist</li>
+                    <li>last 2 only in enterprise</li>
+                    <li>Node Keys: combines existence + uniqueness, multi-prop</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>History repeating?</h2>
+            <figure>
+                <img src="img/network_model.png">
+                <figcaption><span>Network Model; Source: </span><a href="https://mariadb.com/kb/en/library/understanding-the-network-database-model/">mariadb.com</a></figcaption>
+            </figure>
+            <aside class="notes">
+                <ul>
+                    <li>1970, Debate CODASYL <-> Relational Model</li>
+                    <li>performance on existing hardware</li>
+                    <li>Complex, no query language</li>
+                    <li>Triple Store, used for NLP -> Semantic Web</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Cypher</h2>
+            <figure class="fragment animated scale-down move-to" data-fragment-index="1" data-animated-move-to-top="-50%" data-animated-move-to-left="0" data-animated-scale-down-to="0.6" data-animated-duration="500">
+                <img src="img/movies.svg">
+            </figure>
+            <div style="position: absolute; top: 55%; width: 100%" >
+                <pre class="fragment" data-fragment-index="1">
+                    <code data-noescape><span class="fragment" data-fragment-index="2">match</span> (<span class="fragment" data-fragment-index="3">p</span>:Person)-[<span class="fragment" data-fragment-index="3">r</span>:DIRECTED]->(<span class="fragment" data-fragment-index="3">m</span>:Movie)<span class="fragment" data-fragment-index="4"> return p,r,n</span></code>
+                </pre>
+            </div>
+            <aside class="notes">
+                <ul>
+                    <li></li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Pattern Matching</h2>
+            <figure class="fragment animated scale-down move-to" data-fragment-index="1" data-animated-move-to-top="-45%"
+                    data-animated-move-to-left="0" data-animated-scale-down-to="0.6" data-animated-duration="500">
+                <img src="img/movie_sample.svg" height="500px">
+            </figure>
+            <div style="position: absolute; top: 55%; width: 100%" >
+                <pre class="fragment">
+                    <code>
+match p=shortestPath((atlas:Movie)-[*1..4]-(good:Movie))
+    where good.title = 'A Few Good Men'
+      and atlas.title = 'Cloud Atlas'
+    return p
+                    </code>
+                </pre>
+            </div>
+            <aside class="notes">
+                <ul>
+                    <li></li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>shortest path - Result</h2>
+                <pre>
+                    <code>
+match p=shortestPath((atlas:Movie)<-[*1..4]->(good:Movie))
+    where good.title = 'A Few Good Men'
+      and atlas.title = 'Cloud Atlas'
+    return p
+                    </code>
+                </pre>
+            <img src="img/shortest_path.svg">
+            <aside class="notes">
+                <ul>
+                    <li></li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>all path - Result</h2>
+            <pre>
+                    <code>match p=(atlas:Movie)<-[*1..4]->(good:Movie)
+    where good.title = 'A Few Good Men'
+      and atlas.title = 'Cloud Atlas'
+    return p</code>
+                </pre>
+            <img src="img/all_path.svg">
+            <aside class="notes">
+                <ul>
+                    <li></li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Cypher</h2>
+            <dl>
+                <dt>match:</dt>
+                <dd>query for notes and relationships</dd>
+                <dt>create / merge:</dt>
+                <dd>create notes and / or relationships</dd>
+                <dt>delete:</dt>
+                <dd>delete of notes and relationships</dd>
+                <dt>set:</dt>
+                <dd>setting of attributes</dd>
+                <dt>remove:</dt>
+                <dd>removing of attributes</dd>
+                <dt>with:</dt>
+                <dd>chaining of queries</dd>
+            </dl>
+            <aside class="notes">
+                <ul>
+                    <li>declarative query language</li>
+                    <li>opencypher</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>and more</h2>
+            <div class="container">
+                <div class="sliding-background"></div>
+                <img src="img/refcard.png">
+            </div>
+
+            <aside class="notes">
+                <ul>
+                    <li>spatial</li>
+                    <li>string: </li>
+                    <li>converter: toInt, toFloat,..</li>
+                    <li>temporal: working with times</li>
+                    <li>aggregations</li>
+                    <li>schema: index & constraints</li>
+                    <li>math: round, abs,..</li>
+                    <li>lists, maps, foreach,..</li>
+                    <li>profiling: explain & profile</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+
+            <dl>
+                <dt>A</dt>
+                <dd class="fragment">tomicity</dd>
+                <dt>C</dt>
+                <dd class="fragment">onsistency</dd>
+                <dt>I</dt>
+                <dd class="fragment">solation</dd>
+                <dt>D</dt>
+                <dd class="fragment">urability</dd>
+            </dl>
+
+            <aside class="notes">
+                <ul>
+                    <li>A: atomic transactions; all or nothing</li>
+                    <li>C: data consistent with constrains</li>
+                    <li>I: transactions are isolated</li>
+                    <li>D: state once written is not lost</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>DB - Plugins</h2>
+            <ul>
+                <li>reside inside database</li>
+                <li>low-level API</li>
+                <li>Graph Algorithm</li>
+                <li>GraphQL</li>
+            </ul>
+            <aside class="notes">
+                <ul>
+                    <li>fast, no network</li>
+                    <li>GraphQL: GrandStack</li>
+                    <li>and, of course: --> APOC</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>APOC</h2>
+            <div style="width: 100%;">
+                <figure style="float:right; width: 30%">
+                    <img src="img/matrix_apoc.png">
+                    <figcaption><span>Apoc; Source: </span><a href="http://tvtropes.org/pmwiki/pmwiki.php/Characters/TheMatrix">vtropes.org</a></figcaption>
+                </figure>
+            </div>
+            <div style="float:none;">
+                <ul>
+                    <li>"A Package Of Components"</li>
+                    <li>"Awesome Procedures On Cypher"</li>
+                    <li><a href="https://neo4j-contrib.github.io/neo4j-apoc-procedures/">https://neo4j-contrib.github.io/neo4j-apoc-procedures/</a></li>
+                </ul>
+            </div>
+            <aside class="notes">
+                <ul>
+                    <li>Plugin for Neo4j DB</li>
+                    <li>fast access to database, no network, native API</li>
+                    <li>reference to 'The Matrix', Cypher betrays Apoc</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Apoc</h2>
+            <ul>
+                <li class="fragment">499 Functions and Procedures</li>
+                <li class="fragment">Import / Export</li>
+                <li class="fragment">Text, Phonetic</li>
+                <li class="fragment">Refactorings</li>
+                <li class="fragment">Jobs, Transactions, virtual Nodes ..</li>
+            </ul>
+
+            <pre class="fragment">
+                <code>CALL apoc.load.csv('/tmp/test.csv') yield lineNo, map,
+    list RETURN *;</code>
+            </pre>
+            <aside class="notes">
+                <ul>
+                    <li>Import: csv, json, jdbc, ldap,..</li>
+                    <li>import source can be networked</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Running Neo4j</h2>
+            <figure class="fragment animated scale-down move-to" data-animated-move-to-top="-160%"
+                    data-animated-move-to-left="200%" data-animated-scale-down-to="0.2" data-animated-duration="500">
+                <img src="img/jvm.jpeg">
+                <figcaption>JVM; Source: Oracle</figcaption>
+            </figure>
+            <div class="fragment" style="position: absolute; top: 20%;">
+                <figure class="fragment animated scale-down move-to" data-animated-move-to-top="-160%"
+                        data-animated-move-to-left="-200%" data-animated-scale-down-to="0.2" data-animated-duration="500">
+                    <img src="img/multi-clustering-neo4j.png">
+                    <figcaption>Cluster; Source: Neo4j</figcaption>
+                </figure>
+            </div>
+            <div class="fragment" style="position: absolute; top: 20%; left: 40%">
+                <figure class="fragment animated scale-down move-to" data-animated-move-to-top="80%"
+                        data-animated-move-to-left="-400%" data-animated-scale-down-to="0.4" data-animated-duration="500">
+                    <img src="img/neo4j-docker.jpg">
+                    <figcaption>Docker; Source: Neo4j</figcaption>
+                </figure>
+            </div>
+            <div class="fragment" style="position: absolute; top: 20%; left: 10%">
+                <figure class="fragment animated scale-down move-to" data-animated-move-to-top="100%"
+                        data-animated-move-to-left="20%" data-animated-scale-down-to="0.2" data-animated-duration="500">
+                    <img src="img/neo4j-k8s.jpg">
+                    <figcaption>Kubernetes; Source: Neo4j</figcaption>
+                </figure>
+            </div>
+            <div class="fragment" style="position: absolute; top: 20%; left: 25%">
+                <figure class="fragment animated scale-down move-to" data-animated-move-to-top="110%"
+                        data-animated-move-to-left="-120%" data-animated-scale-down-to="0.1" data-animated-duration="500">
+                    <img src="img/helm-988x1024.png">
+                    <figcaption>Helm; Source: Neo4j</figcaption>
+                </figure>
+            </div>
+            <div class="fragment" style="position: absolute; top: 20%; left: 25%">
+                <figure class="fragment animated scale-down move-to" data-animated-move-to-top="110%"
+                        data-animated-move-to-left="-120%" data-animated-scale-down-to="0.3" data-animated-duration="500">
+                    <img src="img/aws-cloud-neo4j.png">
+                </figure>
+            </div>
+            <div class="fragment" style="position: absolute; top: 20%; left: 25%">
+                <figure class="fragment animated scale-down move-to" data-animated-move-to-top="110%"
+                        data-animated-move-to-right="-120%" data-animated-scale-down-to="0.3" data-animated-duration="500">
+                    <img src="img/gcp-cloud-neo4j.png">
+                </figure>
+            </div>
+            <div class="fragment" style="position: absolute; top: 20%; left: 25%; width: 80%">
+                <figure class="fragment animated scale-down move-to" data-animated-move-to-top="100%"
+                        data-animated-move-to-right="40%" data-animated-scale-down-to="0.3" data-animated-duration="500">
+                    <img src="img/azure-cloud-neo4j1.png">
+                </figure>
+            </div>
+            <div class="fragment" style="position: absolute; top: 20%; left: 25%; width: 80%">
+                <figure class="fragment animated scale-down move-to" data-animated-move-to-top="180%"
+                        data-animated-move-to-right="0%" data-animated-scale-down-to="0.3" data-animated-duration="500">
+                    <img src="img/neo4j-desktop.png">
+                </figure>
+            </div>
+            <aside class="notes">
+                <ul>
+                    <li>mention in-process</li>
+                    <li>cluster: core: write, follower only read</li>
+                    <li>driver does routing, important to tell if write or read</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Protocol</h2>
+            <ul>
+                <li><figure style="display: inline-grid; vertical-align: middle">
+                    <img src="img/boltprotocol.png" style="background-color: transparent; border: none">
+                    <figcaption><span>Source: </span><a href="https://boltprotocol.org/">boltprotocol.org</a></figcaption>
+                </figure>
+                <span>: Bolt, lightweight binary protocol</span>
+                </li>
+                <li>
+                    <figure style="display: inline-grid; vertical-align: middle">
+                        <img src="img/http.png"  style="background-color: transparent; border: none">
+                        <figcaption><span>Source: </span><a href="https://de.wikipedia.org/wiki/Datei:HTTP_logo.svg">wikipedia</a></figcaption>
+                    </figure>
+                    <span>: transactional json endpoint</span>
+                </li>
+            </ul>
+            <aside class="notes">
+                <ul>
+                    <li>both support authentication / users / roles</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Drivers</h2>
+            <div class="main-container">
+                <div class="left-container">
+                    <span>Official</span>
+                    <ul>
+                        <li>Java</li>
+                        <li>.Net</li>
+                        <li>Python</li>
+                        <li>Go</li>
+                        <li>JavaScript</li>
+                    </ul>
+                </div>
+                <div class="right-container">
+                    <span>Community</span>
+                    <ul>
+                        <li>Erlang / Elixir</li>
+                        <li>C/C++</li>
+                        <li>Ruby</li>
+                        <li>Clojure</li>
+                        <li>PHP</li>
+                        <li>Perl</li>
+                        <li>R</li>
+                        <li>Haskell</li>
+                    </ul>
+                </div>
+            </div>
+            <aside class="notes">
+                <ul>
+                    <li>jdbc level</li>
+                    <li>for Java: OGM / Spring Data</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Community Edition</h2>
+            <h3>Or</h3>
+            <h2>Enterprise Edition</h2>
+            <aside class="notes">
+                <ul>
+                    <li>Startup program</li>
+                </ul>
+            </aside>
+        </section>
+        <section>
+            <h2>Graph Algorithm</h2>
+            <figure>
+                <img src="img/OReilly-Graph-Algorithms_v2_ol1.jpg" style="margin: 0">
+            </figure>
+            <a href="https://neo4j.com/graph-algorithms-book/">Get the free book</a>
+            <aside class="notes">
+                <ul>
+                    <li>Centrality</li>
+                    <li>Community detection</li>
+                    <li>Path finding</li>
+                    <li>Page Rank</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h3>use cases</h3>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Identity Management</h2>
+            <figure>
+                <img src="img/identity-data-model.png">
+                <figcaption><span>Source: </span><a href="https://neo4j.com/blog/telenor-neo4j-competitive-advantage-iam/">Neo4j.com</a></figcaption>
+            </figure>
+            <aside class="notes">
+                <ul>
+                    <li>Groups and Roles build Graphs</li>
+                    <li>Resources build Trees (Graphs)</li>
+                    <li>Problem that lead to neo4j existence</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Fraud Detection</h2>
+            <figure>
+                <img src="img/first-party-bank-fraud-detection-graph-database.png">
+                <figcaption><span>Source: </span><a href="https://neo4j.com/blog/first-party-bank-fraud-detection-graph-databases/">Neo4j.com</a></figcaption>
+            </figure>
+            <aside class="notes">
+                <ul>
+                    <li>2 Phones / 2 Addresses -> 4 Persona</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Fraud Detection</h2>
+            <figure>
+                <img src="img/fraud-detection-graph-algorithm.png">
+                <figcaption><span>Source: </span><a href="https://neo4j.com/blog/first-party-bank-fraud-detection-graph-databases/">Neo4j.com</a></figcaption>
+            </figure>
+            <aside class="notes">
+                <ul>
+                    <li>4 People -> 16 persona</li>
+                    <li>exponential explosion</li>
+                    <li>relational queries to slow</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>jQAssistant</h2>
+            <figure>
+                <img src="img/jqassistant_model.png">
+                <figcaption><span>Source: </span><a href="https://neo4j.com/blog">Neo4j.com</a></figcaption>
+            </figure>
+            <aside class="notes">
+                <ul>
+                    <li>how it works / in-process</li>
+                    <li>structural analysis</li>
+                    <li>exploration and validation</li>
+                    <li>expansible through plugins</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Service Monitoring</h2>
+            <figure>
+                <img src="img/macgyver-rest-api-neo4j.png" style="margin-top: 0">
+            </figure>
+            <figure>
+                <img src="img/virtual-service-data-model-neo4j.png">
+                <figcaption><span>Source: </span><a href="https://neo4j.com/blog/managing-microservices-neo4j/">Neo4j.com</a></figcaption>
+            </figure>
+            <aside class="notes">
+                <ul>
+                    <li>Lending Club: > 130 microservices</li>
+                    <li>real time operational data</li>
+                    <li>grouped into virtual services</li>
+                    <li>MacGyver hooked into aws, vmware, splunk, githup,..</li>
+                    <li>infrastructure monitoring > neo4j</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Social Graphs</h2>
+            <figure>
+                <img src="img/behance.png">
+                <figcaption>Adobe Behance</figcaption>
+
+            </figure>
+            <aside class="notes">
+                <ul>
+                    <li>Social web for Creative / Activity Feed</li>
+                    <li>Cassandra: 48 Server -> Neo4j:3</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2 style="top: -60px; position: absolute">Online transactional processing</h2>
+            <div class="fragment" style="top:90px; position: absolute" >
+            <figure class="fragment animated fade-out" data-animated-duration="500">
+                <img src="img/ingressdb_data_model.png">
+            </figure>
+            </div>
+            <div class="fragment" style="top: 90px;position: absolute; vertical-align: middle">
+            <figure>
+                <img src="img/ingressdb_heatmap.png">
+            </figure>
+            </div>
+            <div class="fragment" style="top: 90px;position: absolute; vertical-align: middle">
+                <figure>
+                    <img src="img/ingressdb_agent_screen_bottom.png">
+                </figure>
+            </div>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Sandbox</h2>
+            <figure>
+                <img src="img/sandbox.png" style="margin-top: 0">
+                <figcaption>Neo4j Sandboxes</figcaption>
+
+            </figure>
+            <aside class="notes">
+                <ul>
+                    <li>data exploration</li>
+                    <li>own sandbox: 3 days</li>
+                </ul>
+            </aside>
+        </section>
+        <section>
+            <h2>Others</h2>
+            <ul>
+                <li class="fragment">recommendation</li>
+                <li class="fragment">natural language processing</li>
+                <li class="fragment">medical science</li>
+                <li class="fragment">machine learning</li>
+                <li class="fragment"><a href="https://neo4j.com/use-cases/">see Neo4j website</a></li>
+            </ul>
+            <aside class="notes">
+                <ul>
+                    <li></li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h3>(graphs)-[:ARE]->(everywhere)</h3>
+            <aside class="notes">
+                <ul>
+                    <li></li>
+                    <li>Freund: Frau sieht überall grafen</li>
+                </ul>
+            </aside>
+        </section>
+        <section>
+            <figure>
+                <img src="img/graf50.jpg">
+            </figure>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Spring-Data-Neo4j</h2>
+            <figure>
+                <img src="img/sdn-and-ogm-buildingblocks.png" style="margin-top: 0">
+                <figcaption><span>Source: </span><a href="https://twitter.com/rotnroll666">@rotnroll666</a></figcaption>
+
+            </figure>
+            <aside class="notes">
+                <ul>
+                    <li>OGM like JPA</li>
+                    <li>SDN on top</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>DEMO!</h2>
+            <aside class="notes">
+                <ul>
+                    <li>start with showing neo4j desktop</li>
+                    <li>http://install.graphapp.io</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section>
+            <h2>Vielen Dank</h2>
+            <h2>Q and A</h2>
+            <aside class="notes">
+                <ul>
+                    <li>make aware of online courses and certification</li>
+                    <li>ask if people are ok to photo-shot</li>
+                </ul>
+            </aside>
+        </section>
+        <!-- ********************** -->
+        <section >
+            <h1>Welcome Neo4j</h1>
+            <h2>from Munich / Germany</h2>
+            <p>#GlobalGraphCelebrationDay</p>
+        </section>
+    </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+    // More info about config & dependencies:
+    // - https://github.com/hakimel/reveal.js#configuration
+    // - https://github.com/hakimel/reveal.js#dependencies
+    Reveal.initialize({
+        dependencies: [
+            {src: 'plugin/markdown/marked.js'},
+            {src: 'plugin/markdown/markdown.js'},
+            {src: 'plugin/notes/notes.js', async: true},
+            {
+                src: 'plugin/highlight/highlight.js', async: true, callback: function () {
+                    hljs.initHighlightingOnLoad();
+                }
+            },
+            { src: 'socket.io/socket.io.js', async: true },
+            { src: 'plugin/notes-server/client.js', async: true },
+            { src: 'node_modules/reveal.js-menu/menu.js' },
+            { src: 'plugin/zoom-js/zoom.js', async: true },
+            {src: 'node_modules/revealjs-animated/dist/revealjs-animated.js', async: true}
+        ],
+        // Display presentation control arrows
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Vertical centering of slides
+        center: true,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (video/audio/iframe)
+        // - null: Media will only autoplay if data-autoplay is present
+        // - true: All media will autoplay, regardless of individual setting
+        // - false: No media will autoplay, regardless of individual setting
+        autoPlayMedia: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: Reveal.navigateNext,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: 120,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // Hides the address bar on mobile devices
+        hideAddressBar: true,
+
+        // Opens links in an iframe preview overlay
+        // Add `data-preview-link` and `data-preview-link="false"` to customise each link
+        // individually
+        previewLinks: false,
+
+        // Transition style
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Transition speed
+        transitionSpeed: 'default', // default/fast/slow
+
+        // Transition style for full page slide backgrounds
+        backgroundTransition: 'fade', // none/fade/slide/convex/concave/zoom
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Parallax background image
+        parallaxBackgroundImage: '', // e.g. "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'"
+
+        // Parallax background size
+        parallaxBackgroundSize: '', // CSS syntax, e.g. "2100px 900px"
+
+        // Number of pixels to move the parallax background per slide
+        // - Calculated automatically unless specified
+        // - Set to 0 to disable movement along an axis
+        parallaxBackgroundHorizontal: null,
+        parallaxBackgroundVertical: null,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+        menu: {
+            // Specifies which side of the presentation the menu will
+            // be shown. Use 'left' or 'right'.
+            side: 'left',
+
+            // Specifies the width of the menu.
+            // Can be one of the following:
+            // 'normal', 'wide', 'third', 'half', 'full', or
+            // any valid css length value
+            width: 'normal',
+
+            // Add slide numbers to the titles in the slide list.
+            // Use 'true' or format string (same as reveal.js slide numbers)
+            numbers: false,
+
+            // Specifies which slide elements will be used for generating
+            // the slide titles in the menu. The default selects the first
+            // heading element found in the slide, but you can specify any
+            // valid css selector and the text from the first matching
+            // element will be used.
+            // Note: that a section data-menu-title attribute or an element
+            // with a menu-title class will take precedence over this option
+            titleSelector: 'h1, h2, h3, h4, h5, h6',
+
+            // If slides do not have a matching title, attempt to use the
+            // start of the text content as the title instead
+            useTextContentForMissingTitles: true,
+
+            // Hide slides from the menu that do not have a title.
+            // Set to 'true' to only list slides with titles.
+            hideMissingTitles: false,
+
+            // Adds markers to the slide titles to indicate the
+            // progress through the presentation. Set to 'false'
+            // to hide the markers.
+            markers: true,
+
+            // Specify custom panels to be included in the menu, by
+            // providing an array of objects with 'title', 'icon'
+            // properties, and either a 'src' or 'content' property.
+            custom: false,
+
+            // Specifies the themes that will be available in the themes
+            // menu panel. Set to 'true' to show the themes menu panel
+            // with the default themes list. Alternatively, provide an
+            // array to specify the themes to make available in the
+            // themes menu panel, for example...
+            // [
+            //     { name: 'Black', theme: 'css/theme/black.css' },
+            //     { name: 'White', theme: 'css/theme/white.css' },
+            //     { name: 'League', theme: 'css/theme/league.css' }
+            // ]
+            themes: true,
+
+            // Specifies the path to the default theme files. If your
+            // presentation uses a different path to the standard reveal
+            // layout then you need to provide this option, but only
+            // when 'themes' is set to 'true'. If you provide your own
+            // list of themes or 'themes' is set to 'false' the
+            // 'themesPath' option is ignored.
+            themesPath: 'css/theme/',
+
+            // Specifies if the transitions menu panel will be shown.
+            // Set to 'true' to show the transitions menu panel with
+            // the default transitions list. Alternatively, provide an
+            // array to specify the transitions to make available in
+            // the transitions panel, for example...
+            // ['None', 'Fade', 'Slide']
+            transitions: false,
+
+            // Adds a menu button to the slides to open the menu panel.
+            // Set to 'false' to hide the button.
+            openButton: true,
+
+            // If 'true' allows the slide number in the presentation to
+            // open the menu panel. The reveal.js slideNumber option must
+            // be displayed for this to take effect
+            openSlideNumber: false,
+
+            // If true allows the user to open and navigate the menu using
+            // the keyboard. Standard keyboard interaction with reveal
+            // will be disabled while the menu is open.
+            keyboard: true,
+
+            // Normally the menu will close on user actions such as
+            // selecting a menu item, or clicking the presentation area.
+            // If 'true', the sticky option will leave the menu open
+            // until it is explicitly closed, that is, using the close
+            // button or pressing the ESC or m key (when the keyboard
+            // interaction option is enabled).
+            sticky: false,
+
+            // If 'true' standard menu items will be automatically opened
+            // when navigating using the keyboard. Note: this only takes
+            // effect when both the 'keyboard' and 'sticky' options are enabled.
+            autoOpen: true,
+
+            // If 'true' the menu will not be created until it is explicitly
+            // requested by calling RevealMenu.init(). Note this will delay
+            // the creation of all menu panels, including custom panels, and
+            // the menu button.
+            delayInit: false,
+
+            // If 'true' the menu will be shown when the menu is initialised.
+            openOnInit: false,
+
+            // By default the menu will load it's own font-awesome library
+            // icons. If your presentation needs to load a different
+            // font-awesome library the 'loadIcons' option can be set to false
+            // and the menu will not attempt to load the font-awesome library.
+            loadIcons: true
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+.reveal .controls[data-controls-back-arrows="faded"] .navigate-left.enabled, .reveal .controls[data-controls-back-arrows="faded"] .navigate-up.enabled {
+    opacity: 0.1;
+}
+
+.reveal .controls .enabled {
+    visibility: visible;
+    opacity: 0.2;
+    cursor: pointer;
+    -webkit-transform: none;
+    transform: none;
+}
+
+.reveal .progress {
+    opacity: 0.2;
+}
+
+.slide-menu-button > a {
+    opacity: 0.2;
+}
+
+.reveal section img {
+    margin-bottom: 0;
+    background-color: #134674;
+}
+.reveal figcaption {
+    font-size: xx-small;
+}
+
+.reveal h5 {
+    text-align: left;
+}
+
+.reveal ul {
+    display: block;
+    margin-bottom: 1em;
+}
+
+.reveal pre {
+    box-shadow: none;
+}
+
+
+.reveal dl {
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+    font-size: smaller;
+    line-height: 2em;
+}
+.reveal dt {
+    flex-basis: 30%;
+    padding: 2px 4px;
+    text-align: right;
+    font-weight: bold;
+    color: #26eb26;
+}
+.reveal dd {
+    flex-basis: 60%;
+    flex-grow: 1;
+    margin: 0;
+    padding: 2px 4px;
+}
+
+.reveal .container {
+    overflow: hidden;
+    max-height: 550px;
+}
+
+.reveal .sliding-background {
+    width: 800px;
+    height: 44340px;
+}
+
+@keyframes slideimage {
+    0%{
+        transform: translate3d(0, 0, 0);
+    }
+    100%{
+        transform: translate3d(0, -14780px, 0);
+    }
+}
+
+.sliding-background {
+    background: url("../img/refcard.png") repeat-x;
+    height: 560px;
+    width: 5076px;
+    animation: slideimage 70s linear infinite;
+}
+
+.reveal .main-container {
+    height: 100%;
+    display: flex;
+    text-align: left;
+}
+
+.reveal .left-container {
+    flex: 1 1 0;
+}
+
+.reveal .right-container {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+}
